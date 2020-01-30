@@ -4,6 +4,8 @@ var https = require("https");
 
 let word = process.argv[2];
 
+let responseData = "";
+
 formatList = list =>
 {
     str = ""
@@ -28,11 +30,14 @@ let req = https.request(
         
         res.on('data', (chunk) => 
         {
-            // console.log(chunk);
-            // console.log("-------");
+            responseData += chunk;
+        });
+        
+        res.on("end", () =>
+        {
             try 
             {
-                let data = JSON.parse(chunk);
+                let data = JSON.parse(responseData);
                 data.forEach(def =>
                     {
                         console.log(`${def.word}:`);
