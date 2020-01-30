@@ -4,6 +4,13 @@ var https = require("https");
 
 let word = process.argv[2];
 
+formatList = list =>
+{
+    str = ""
+    list.forEach(element => str += element + ", ");
+    return str.substring(0, str.length - 2)
+}
+
 let req = https.request(
     {
         hostname: "googledictionaryapi.eu-gb.mybluemix.net",
@@ -35,8 +42,7 @@ let req = https.request(
                             if(meaning[0].synonyms)
                             {
                                 process.stdout.write(`\t(${meaningType}):\n\t\t`);
-                                meaning[0].synonyms.forEach(synonym => process.stdout.write(`${synonym} `))
-                                console.log();
+                                console.log(formatList(meaning[0].synonyms));
                             }
                         }
                     }
