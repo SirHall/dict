@@ -1,8 +1,10 @@
 # Define
-Simple command-line definition search
+Simple command-line definition/synonym search
 
 # Usage
-`define word`
+`def word`
+
+`syn word`
 
 # Requirements
 Simply requires nodejs, no packages.
