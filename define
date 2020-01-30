@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+var https = require("https");
+
+let word = process.argv[2];
+
+let req = https.request(
+    {
+        hostname: "googledictionaryapi.eu-gb.mybluemix.net",
+        port: 443,
+        path: `/?define=${word}`,
+        method: "GET",
+        // rejectUnauthorized: false,
+        header: 
+            {
+                "Content-Type": "application/json"
+            }
+    },
+    (res) => 
+    {
+        res.setEncoding('utf8');
+        
+        res.on('data', (chunk) => 
+        {
+            // console.log(chunk);
+            // console.log("-------");
+            try 
+            {
+                let data = JSON.parse(chunk);
+                data.forEach(def =>
+                    {
+                        console.log(`${def.word}:`);
+                        for(const [meaningType, meaning] of Object.entries(def.meaning))
+                            console.log(`\t(${meaningType}): ${meaning[0].definition}`);
+                    }
+                );
+            }
+            catch (error) 
+            {
+                console.log(`${word} could not be found`);
+            }
+        });
+    }
+);
+
+req.on("error", (e) => {console.error(e.message);});
+req.end();
