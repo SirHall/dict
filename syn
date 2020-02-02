@@ -15,9 +15,9 @@ formatList = list =>
 
 let req = https.request(
     {
-        hostname: "googledictionaryapi.eu-gb.mybluemix.net",
+        hostname: "api.datamuse.com",
         port: 443,
-        path: `/?define=${word}`,
+        path: `/words?ml=${word}`,
         method: "GET",
         header: 
             {
@@ -40,18 +40,10 @@ let req = https.request(
                 let data = JSON.parse(responseData);
                 data.forEach(def =>
                     {
-                        console.log(`${def.word}:`);
-                        
-                        for(const [meaningType, meaning] of Object.entries(def.meaning))
-                        {
-                            if(meaning[0].synonyms)
-                            {
-                                process.stdout.write(`\t(${meaningType}):\n\t\t`);
-                                console.log(formatList(meaning[0].synonyms));
-                            }
-                        }
+                        process.stdout.write(`${def.word} `);
                     }
                 );
+                console.log();
             }
             catch (error) 
             {
